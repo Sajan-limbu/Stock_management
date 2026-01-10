@@ -17,7 +17,7 @@ void push(struct Stock item) {
         return;
     }
     stack[++top] = item;
-    printf("Stock \"%s\"  with (ID: %d) is added.\n", item.name, item.id);
+    printf("Stock \"%s\"  with ID: %d is added.\n", item.name, item.id);
 }
 
 void pop() {
@@ -25,7 +25,7 @@ void pop() {
         printf("Stock underflow!\n");
         return;
     }
-    printf("Stock \"%s\" with (ID: %d) is removed.\n",
+    printf("Stock \"%s\" with ID: %d is removed.\n",
            stack[top].name, stack[top].id);
     top--;
 }
@@ -69,7 +69,7 @@ int main() {
                 break;
 
             case 4:
-                printf("Exiting program.\n");
+                printf("Exit program.\n");
                 break;
 
             default:
