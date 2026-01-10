@@ -1,17 +1,23 @@
 #include <stdio.h>
+#include <string.h>
+
 #define MAX 100
 
-int stack[MAX];
+struct Stock {
+    int id;
+    char name[50];
+};
+
+struct Stock stack[MAX];
 int top = -1;
 
-void push(int item) {
+void push(struct Stock item) {
     if (top == MAX - 1) {
-        printf("Stock overflow!\n");
+        printf("Stock is full \n");
         return;
     }
-    top++;
-    stack[top] = item;
-    printf("Stock item %d added.\n", item);
+    stack[++top] = item;
+    printf("Stock \"%s\"  with (ID: %d) is added.\n", item.name, item.id);
 }
 
 void pop() {
@@ -19,22 +25,26 @@ void pop() {
         printf("Stock underflow!\n");
         return;
     }
-    printf("Stock item %d removed.\n", stack[top]);
+    printf("Stock \"%s\" with (ID: %d) is removed.\n",
+           stack[top].name, stack[top].id);
     top--;
 }
+
 void display() {
     if (top == -1) {
         printf("No stock available.\n");
         return;
     }
-    printf("Current Stock:\n");
+
+    printf("Available stocks are:\n");
     for (int i = top; i >= 0; i--) {
-        printf("%d\n", stack[i]);
+        printf("Name: %s \nID: %d\n", stack[i].name, stack[i].id);
     }
 }
 
 int main() {
-    int choice, item;
+    int choice;
+    struct Stock item;
 
     do {
         printf("\n1. Add Stock\n2. Remove Stock\n3. Display Stock\n4. Exit\n");
@@ -43,21 +53,27 @@ int main() {
 
         switch (choice) {
             case 1:
-                printf("Enter stock item ID: ");
-                scanf("%d", &item);
+                printf("Enter stock name: ");
+                scanf("%s", item.name);
+                printf("Enter stock ID: ");
+                scanf("%d", &item.id);
                 push(item);
                 break;
+
             case 2:
                 pop();
                 break;
+
             case 3:
                 display();
                 break;
+
             case 4:
                 printf("Exiting program.\n");
                 break;
+
             default:
-                printf("Invalid choice!\n");
+                printf("Please enter correctly.\n");
         }
     } while (choice != 4);
 
