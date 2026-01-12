@@ -4,76 +4,114 @@
 #define MAX 100
 
 struct Stock {
-    int id;
-    char name[50];
+    int quantity;
+    char name[60];
 };
 
-struct Stock stack[MAX];
-int top = -1;
+struct Stock stock[MAX];
+int number = 0; 
 
-void push(struct Stock item) {
-    if (top == MAX - 1) {
-        printf("Stock is full \n");
-        return;
+
+void addStock() {
+    char name[60];
+    int quantity;
+
+    printf("Enter stock name: ");
+    scanf("%s", name);
+    printf("Enter quantity: ");
+    scanf("%d", &quantity);
+
+
+    for (int i = 0; i < number; i++) {
+        if (strcmp(stock[i].name, name) == 0) {
+            stock[i].quantity += quantity;
+            printf("Stock %s is added.Total quantity is %d\n",
+                   name, stock[i].quantity);
+            return;
+        }
     }
-    stack[++top] = item;
-    printf("Stock \"%s\"  with ID: %d is added.\n", item.name, item.id);
+    if (number < MAX) {
+        strcpy(stock[number].name, name);
+        stock[number].quantity = quantity;
+        number++;
+        printf("New stock added.\n");
+    } else {
+        printf("Stock is full.\n");
+    }
 }
 
-void pop() {
-    if (top == -1) {
-        printf("Stock underflow!\n");
-        return;
+
+void removeStock() {
+    char name[50];
+    int quantity;
+
+    printf("Enter stock name to remove: ");
+    scanf("%s", name);
+    printf("Enter quantity to remove: ");
+    scanf("%d", &quantity);
+
+    for (int i = 0; i < number; i++) {
+        if (strcmp(stock[i].name, name) == 0) {
+
+            if (stock[i].quantity < quantity) {
+                printf("Not enough stock available to remove.\n");
+                return;
+            }
+
+            stock[i].quantity -= quantity;
+            printf("Stock %s is removed and remaining quantity in the list is %d\n",
+                   name, stock[i].quantity);
+
+            if (stock[i].quantity == 0) {
+                for (int j = i; j < number - 1; j++) {
+                    stock[j] = stock[j + 1];
+                }
+                number--;
+                printf("Stock %s is completely removed.\n", name);
+            }
+            return;
+        }
     }
-    printf("Stock \"%s\" with ID: %d is removed.\n",
-           stack[top].name, stack[top].id);
-    top--;
+
+    printf("Currently no Stock is available.\n");
 }
 
-void display() {
-    if (top == -1) {
-        printf("No stock available.\n");
+void displayStock() {
+    if (number == 0) {
+        printf("No stock available currently.\n");
         return;
     }
 
-    printf("Available stocks are:\n");
-    for (int i = top; i >= 0; i--) {
-        printf("Name: %s \nID: %d\n", stack[i].name, stack[i].id);
+    printf("\nAvailable Stocks:\n");
+    for (int i = 0; i < number; i++) {
+        printf("Name: %s with Quantity: %d\n",
+               stock[i].name, stock[i].quantity);
     }
 }
 
 int main() {
     int choice;
-    struct Stock item;
 
     do {
         printf("\n1. Add Stock\n2. Remove Stock\n3. Display Stock\n4. Exit\n");
-        printf("Enter your choice: ");
+        printf("Enter choice: ");
         scanf("%d", &choice);
 
         switch (choice) {
             case 1:
-                printf("Enter stock name: ");
-                scanf("%s", item.name);
-                printf("Enter stock ID: ");
-                scanf("%d", &item.id);
-                push(item);
+                addStock();
                 break;
-
             case 2:
-                pop();
+                removeStock();
                 break;
-
             case 3:
-                display();
+                displayStock();
                 break;
-
             case 4:
-                printf("Exit program.\n");
+                printf("Program exited.\n");
                 break;
-
             default:
-                printf("Please enter correctly.\n");
+                printf("Invalid choice.\n");
         }
     } while (choice != 4);
 
