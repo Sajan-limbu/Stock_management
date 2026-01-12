@@ -3,16 +3,17 @@
 
 #define MAX 100
 
-struct Stock {
+struct Stock
+{
     int quantity;
     char name[60];
 };
 
 struct Stock stock[MAX];
-int number = 0; 
+int number = 0;
 
-
-void addStock() {
+void addStock()
+{
     char name[60];
     int quantity;
 
@@ -21,27 +22,31 @@ void addStock() {
     printf("Enter quantity: ");
     scanf("%d", &quantity);
 
-
-    for (int i = 0; i < number; i++) {
-        if (strcmp(stock[i].name, name) == 0) {
+    for (int i = 0; i < number; i++)
+    {
+        if (strcmp(stock[i].name, name) == 0)
+        {
             stock[i].quantity += quantity;
             printf("Stock %s is added.Total quantity is %d\n",
                    name, stock[i].quantity);
             return;
         }
     }
-    if (number < MAX) {
+    if (number < MAX)
+    {
         strcpy(stock[number].name, name);
         stock[number].quantity = quantity;
         number++;
-        printf("New stock added.\n");
-    } else {
+        printf("New stock is added in the list.\n");
+    }
+    else
+    {
         printf("Stock is full.\n");
     }
 }
 
-
-void removeStock() {
+void removeStock()
+{
     char name[50];
     int quantity;
 
@@ -50,20 +55,25 @@ void removeStock() {
     printf("Enter quantity to remove: ");
     scanf("%d", &quantity);
 
-    for (int i = 0; i < number; i++) {
-        if (strcmp(stock[i].name, name) == 0) {
+    for (int i = 0; i < number; i++)
+    {
+        if (strcmp(stock[i].name, name) == 0)
+        {
 
-            if (stock[i].quantity < quantity) {
+            if (stock[i].quantity < quantity)
+            {
                 printf("Not enough stock available to remove.\n");
                 return;
             }
 
             stock[i].quantity -= quantity;
-            printf("Stock %s is removed and remaining quantity in the list is %d\n",
+            printf("Stock %s is removed \n Remaining quantity in the list is %d\n",
                    name, stock[i].quantity);
 
-            if (stock[i].quantity == 0) {
-                for (int j = i; j < number - 1; j++) {
+            if (stock[i].quantity == 0)
+            {
+                for (int j = i; j < number - 1; j++)
+                {
                     stock[j] = stock[j + 1];
                 }
                 number--;
@@ -76,44 +86,72 @@ void removeStock() {
     printf("Currently no Stock is available.\n");
 }
 
-void displayStock() {
-    if (number == 0) {
+void searchStock()
+{
+    char name[60];
+    printf("Enter stock name to search: ");
+    scanf("%s", name);
+
+    for (int i = 0; i < number; i++)
+    {
+        if (strcmp(stock[i].name, name) == 0)
+        {
+            printf("Stock Found!\n");
+            printf("Stock name %s with Quantity %d\n",
+                   stock[i].name, stock[i].quantity);
+            return;
+        }
+    }
+    printf("Stock not found.\n");
+}
+
+void displayStock()
+{
+    if (number == 0)
+    {
         printf("No stock available currently.\n");
         return;
     }
 
     printf("\nAvailable Stocks:\n");
-    for (int i = 0; i < number; i++) {
-        printf("Name: %s with Quantity: %d\n",
+    for (int i = 0; i < number; i++)
+    {
+        printf("Stock name: %s \n  Quantity: %d\n",
                stock[i].name, stock[i].quantity);
     }
 }
 
-int main() {
+int main()
+{
     int choice;
 
-    do {
-        printf("\n1. Add Stock\n2. Remove Stock\n3. Display Stock\n4. Exit\n");
+    do
+    {
+        printf("\n1. Add Stock\n2. Remove Stock\n3.Search stock \n4. Display Stock\n5. Exit\n");
         printf("Enter choice: ");
         scanf("%d", &choice);
 
-        switch (choice) {
-            case 1:
-                addStock();
-                break;
-            case 2:
-                removeStock();
-                break;
-            case 3:
-                displayStock();
-                break;
-            case 4:
-                printf("Program exited.\n");
-                break;
-            default:
-                printf("Invalid choice.\n");
+        switch (choice)
+        {
+        case 1:
+            addStock();
+            break;
+        case 2:
+            removeStock();
+            break;
+        case 3:
+            searchStock();
+            break;
+        case 4:
+            displayStock();
+            break;
+        case 5:
+            printf("Program exited.\n");
+            break;
+        default:
+            printf("Invalid choice.\n");
         }
-    } while (choice != 4);
+    } while (choice != 5);
 
     return 0;
 }
